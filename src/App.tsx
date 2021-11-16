@@ -1,44 +1,37 @@
-import { useState } from 'react'
-import logo from './logo.svg'
+import {QueryClientProvider,QueryClient} from 'react-query'
+import { ReactQueryDevtools } from "react-query/devtools"
+import {ReactLocation,Router,Link,Outlet} from 'react-location'
+
+import {Home,Posts} from './pages'
+
 import './App.css'
 
+const queryClient = new QueryClient()
+const location = new ReactLocation()
+
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Router
+        location={location}
+        routes={[
+          {
+            path:'/',
+            element: <Home/>
+          },
+          {
+            path : '/posts',
+            element : <Posts/>
+          }
+        ]}
+      >
+        <Link to="/">Home</Link>
+        <Link to='posts' >Posts</Link>
+        <Outlet/>
+      </Router>
+      <ReactQueryDevtools initialIsOpen={false}/>
+    </QueryClientProvider>
   )
 }
 
