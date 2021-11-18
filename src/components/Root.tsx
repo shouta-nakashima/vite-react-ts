@@ -1,8 +1,8 @@
 import {useQueryClient} from "react-query";
 import { Link , Outlet , ReactLocation , Router } from "react-location";
 
-import { Home , Posts, PlanetDetails } from "../pages";
-import { fetchPlanet , fetchPeoples , fetchPlanets } from "../lib/api";
+import { Home , Posts, PlanetDetails,HumanDetail } from "../pages";
+import { fetchPlanet , fetchPeoples , fetchPlanets,fetchHuman } from "../lib/api";
 
 const Roots = () => {
   const location = new ReactLocation()
@@ -22,7 +22,7 @@ const Roots = () => {
             },
           },
       {
-        path : '/posts',
+        path : 'posts',
           element : <Posts/>,
         loader: () => queryClient.getQueryData('planets') ??
         queryClient.fetchQuery('planets',fetchPlanets),
@@ -35,7 +35,13 @@ const Roots = () => {
               queryClient.fetchQuery(['human',url],() =>fetchPlanet(url)),
           }
         ]
-      }
+      },
+        {
+          path : 'people/:id',
+          element : <HumanDetail/>,
+          loader:({params:{id}}) => queryClient.getQueryData(['human',id]) ??
+            queryClient.fetchQuery(['human',id],() =>fetchHuman(id)),
+        }
     ]}
     >
       <Link to="/">Home</Link>

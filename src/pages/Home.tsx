@@ -18,7 +18,7 @@ const Home:FC = () => {
       {data && data.results.map((p) => (
         <p key={p.name}>
           <Link
-            to={`/human/${cutId(p.url,29) }/`}
+            to={`/people/${cutId(p.url,29) }/`}
             //onMouseEnter={() => loadRoute({to:cutId(p.url,29)})}
           >
             {p.name}
